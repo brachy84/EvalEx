@@ -79,6 +79,7 @@ public class Tokenizer {
           throw new ParseException(currentToken, "Missing operator");
         }
       }
+      isInfixInsteadOfPostfix(currentToken);
       validateToken(currentToken);
       tokens.add(currentToken);
       currentToken = getNextToken();
@@ -107,6 +108,17 @@ public class Tokenizer {
             && currentToken.getType() == VARIABLE_OR_CONSTANT)
         || (previousToken.getType() == NUMBER_LITERAL && currentToken.getType() == FUNCTION)
         || (previousToken.getType() == NUMBER_LITERAL && currentToken.getType() == BRACE_OPEN));
+  }
+
+  private void isInfixInsteadOfPostfix(Token currentToken) {
+    if (currentToken == null || invalidTokenAfterInfixOperator(currentToken)) return;
+    Token previousToken = getPreviousToken();
+    if (previousToken == null || previousToken.getType() != POSTFIX_OPERATOR) return;
+    String opString = previousToken.getValue();
+    if (operatorDictionary.hasInfixOperator(opString)) {
+      OperatorIfc op = operatorDictionary.getInfixOperator(opString);
+      setPreviousToken(new Token(previousToken.getStartPosition(), opString, INFIX_OPERATOR, op));
+    }
   }
 
   private void validateToken(Token currentToken) throws ParseException {
@@ -223,6 +235,12 @@ public class Tokenizer {
 
   private Token getPreviousToken() {
     return tokens.isEmpty() ? null : tokens.get(tokens.size() - 1);
+  }
+
+  private void setPreviousToken(Token token) {
+    if (!tokens.isEmpty()) {
+      tokens.set(tokens.size() - 1, token);
+    }
   }
 
   private Token parseOperator() throws ParseException {
