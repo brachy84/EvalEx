@@ -17,7 +17,10 @@ package com.ezylang.evalex.config;
 
 import static java.util.Arrays.stream;
 
+import com.ezylang.evalex.UnmodifiableSet;
 import com.ezylang.evalex.operators.OperatorIfc;
+
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -41,6 +44,7 @@ public class MapBasedOperatorDictionary implements OperatorDictionaryIfc {
    *     that will initially be added.
    * @return A newly created operator dictionary with the specified operators.
    */
+  @Deprecated
   @SuppressWarnings({"unchecked", "varargs"})
   public static OperatorDictionaryIfc ofOperators(Map.Entry<String, OperatorIfc>... operators) {
     OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary();
@@ -76,31 +80,31 @@ public class MapBasedOperatorDictionary implements OperatorDictionaryIfc {
 
   @Override
   public Set<String> getAvailablePrefixOperatorNames() {
-    return Set.copyOf(prefixOperators.keySet());
+    return new UnmodifiableSet<>(prefixOperators.keySet());
   }
 
   @Override
   public Set<String> getAvailablePostfixOperatorNames() {
-    return Set.copyOf(postfixOperators.keySet());
+    return new UnmodifiableSet<>(postfixOperators.keySet());
   }
 
   @Override
   public Set<String> getAvailableInfixOperatorNames() {
-    return Set.copyOf(infixOperators.keySet());
+    return new UnmodifiableSet<>(infixOperators.keySet());
   }
 
   @Override
   public Set<OperatorIfc> getAvailablePrefixOperators() {
-    return Set.copyOf(prefixOperators.values());
+    return new UnmodifiableSet<>(prefixOperators.values());
   }
 
   @Override
   public Set<OperatorIfc> getAvailablePostfixOperators() {
-    return Set.copyOf(postfixOperators.values());
+    return new UnmodifiableSet<>(postfixOperators.values());
   }
 
   @Override
   public Set<OperatorIfc> getAvailableInfixOperators() {
-    return Set.copyOf(infixOperators.values());
+    return new UnmodifiableSet<>(infixOperators.values());
   }
 }

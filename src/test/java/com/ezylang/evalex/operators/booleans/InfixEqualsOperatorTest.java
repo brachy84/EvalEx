@@ -23,6 +23,7 @@ import com.ezylang.evalex.Expression;
 import com.ezylang.evalex.parser.ParseException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -121,20 +122,20 @@ class InfixEqualsOperatorTest extends BaseEvaluationTest {
   void testInfixEqualsStructures() throws EvaluationException, ParseException {
     Expression expression = new Expression("a=b");
 
-    Map<String, BigDecimal> structure1 =
-        Map.of(
-            "a", new BigDecimal(35),
-            "b", new BigDecimal(99));
+    Map<String, BigDecimal> structure1 = new HashMap<String, BigDecimal>() {{
+      put("a", new BigDecimal(35));
+      put("b", new BigDecimal(99));
+    }};
 
-    Map<String, BigDecimal> structure2 =
-        Map.of(
-            "a", new BigDecimal(35),
-            "b", new BigDecimal(99));
+    Map<String, BigDecimal> structure2 = new HashMap<String, BigDecimal>() {{
+      put("a", new BigDecimal(35));
+      put("b", new BigDecimal(99));
+    }};
 
-    Map<String, BigDecimal> structure3 =
-        Map.of(
-            "a", new BigDecimal(45),
-            "b", new BigDecimal(99));
+    Map<String, BigDecimal> structure3 = new HashMap<String, BigDecimal>() {{
+      put("a", new BigDecimal(45));
+      put("b", new BigDecimal(99));
+    }};
 
     assertThat(expression.with("a", structure1).and("b", structure2).evaluate().getBooleanValue())
         .isTrue();

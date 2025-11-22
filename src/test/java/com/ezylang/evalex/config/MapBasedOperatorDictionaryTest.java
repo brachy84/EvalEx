@@ -32,10 +32,10 @@ class MapBasedOperatorDictionaryTest {
     OperatorIfc postfix = new PostfixQuestionOperator();
     OperatorIfc infix = new InfixModuloOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(
-            Map.entry("++", prefix), Map.entry("?", postfix), Map.entry("%", infix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("++", prefix)
+            .withOperator("?", postfix)
+            .withOperator("%", infix);
 
     assertThat(dictionary.hasPrefixOperator("++")).isTrue();
     assertThat(dictionary.hasPostfixOperator("?")).isTrue();
@@ -56,12 +56,10 @@ class MapBasedOperatorDictionaryTest {
     OperatorIfc postfix = new PostfixQuestionOperator();
     OperatorIfc infix = new InfixModuloOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(
-            Map.entry("PlusPlus", prefix),
-            Map.entry("Question", postfix),
-            Map.entry("Percent", infix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("PlusPlus", prefix)
+            .withOperator("Question", postfix)
+            .withOperator("Percent", infix);
 
     assertThat(dictionary.hasPrefixOperator("PlusPlus")).isTrue();
     assertThat(dictionary.hasPrefixOperator("plusplus")).isTrue();
@@ -80,9 +78,8 @@ class MapBasedOperatorDictionaryTest {
   void testGetAvailablePrefixOperatorNames() {
     OperatorIfc prefix = new PrefixPlusPlusOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(Map.entry("++", prefix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("++", prefix);
 
     assertThat(dictionary.getAvailablePrefixOperatorNames()).containsExactly("++");
   }
@@ -91,9 +88,8 @@ class MapBasedOperatorDictionaryTest {
   void testGetAvailablePostfixOperatorNames() {
     OperatorIfc postfix = new PostfixQuestionOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(Map.entry("?", postfix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("?", postfix);
 
     assertThat(dictionary.getAvailablePostfixOperatorNames()).containsExactly("?");
   }
@@ -102,9 +98,8 @@ class MapBasedOperatorDictionaryTest {
   void testGetAvailableInfixOperatorNames() {
     OperatorIfc infix = new InfixModuloOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(Map.entry("%", infix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("%", infix);
 
     assertThat(dictionary.getAvailableInfixOperatorNames()).containsExactly("%");
   }
@@ -113,9 +108,8 @@ class MapBasedOperatorDictionaryTest {
   void testGetAvailablePrefixOperators() {
     OperatorIfc prefix = new PrefixPlusPlusOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(Map.entry("++", prefix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("++", prefix);
 
     assertThat(dictionary.getAvailablePrefixOperators()).containsExactly(prefix);
   }
@@ -124,9 +118,8 @@ class MapBasedOperatorDictionaryTest {
   void testGetAvailablePostfixOperators() {
     OperatorIfc postfix = new PostfixQuestionOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(Map.entry("?", postfix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("?", postfix);
 
     assertThat(dictionary.getAvailablePostfixOperators()).containsExactly(postfix);
   }
@@ -135,9 +128,8 @@ class MapBasedOperatorDictionaryTest {
   void testGetAvailableInfixOperators() {
     OperatorIfc infix = new InfixModuloOperator();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    OperatorDictionaryIfc dictionary =
-        MapBasedOperatorDictionary.ofOperators(Map.entry("%", infix));
+    OperatorDictionaryIfc dictionary = new MapBasedOperatorDictionary()
+            .withOperator("%", infix);
 
     assertThat(dictionary.getAvailableInfixOperators()).containsExactly(infix);
   }

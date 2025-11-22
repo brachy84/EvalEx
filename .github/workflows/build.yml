@@ -5,9 +5,15 @@ name: Build
 
 on:
   push:
-    branches: [ "main", "3.x.x"]
+    branches: [ "main" ]
+    paths-ignore:
+      - '.github/**' # Release GHA file, please change this when you change the file name
+      - 'LICENSE'
+      - 'README.md'
+      - 'TODO.md'
+      - '.editorconfig'
   pull_request:
-    branches: [ "main", "3.x.x"]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -18,16 +24,30 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up JDK 11
+
+      - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
-          distribution: 'corretto'
-          cache: maven
-      - name: Verify and analyze with SonarCloud
+          java-version: '8'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build Project
+        run: ./gradlew build
+
+      - name: Test Project
+        run: ./gradlew test
+
+      #- name: Verify and analyze with SonarCloud
         ## automatic analysis is enabled in SonarCloud, so it is disabled here
         ## run: mvn --batch-mode verify sonar:sonar -Dsonar.projectKey=ezylang_EvalEx -Dsonar.organization=ezylang -Dsonar.host.url=https://sonarcloud.io -Dsonar.coverage.jacoco.xmlReportPaths=/home/runner/work/EvalEx/EvalEx/target/site/jacoco/jacoco.xml
-        run: mvn --batch-mode clean verify
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #  run: mvn --batch-mode clean verify
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -102,25 +102,6 @@ public class EvaluationValue implements Comparable<EvaluationValue> {
   DataType dataType;
 
   /**
-   * Creates a new evaluation value by using the configured converter and configuration.
-   *
-   * @param value One of the supported data types.
-   * @param configuration The expression configuration to use.
-   * @throws IllegalArgumentException if the data type can't be mapped.
-   * @see ExpressionConfiguration#getEvaluationValueConverter()
-   * @deprecated Use {@link EvaluationValue#of(Object, ExpressionConfiguration)} instead.
-   */
-  @Deprecated(since = "3.3.0", forRemoval = true)
-  public EvaluationValue(Object value, ExpressionConfiguration configuration) {
-
-    EvaluationValue converted =
-        configuration.getEvaluationValueConverter().convertObject(value, configuration);
-
-    this.value = converted.getValue();
-    this.dataType = converted.getDataType();
-  }
-
-  /**
    * Private constructor to directly create an instance with a given type and value.
    *
    * @param value The value to set, no conversion will be done.
@@ -141,17 +122,6 @@ public class EvaluationValue implements Comparable<EvaluationValue> {
    */
   public static EvaluationValue of(Object value, ExpressionConfiguration configuration) {
     return configuration.getEvaluationValueConverter().convertObject(value, configuration);
-  }
-
-  /**
-   * Returns an immutable null value.
-   *
-   * @return A null value.
-   * @deprecated Use {@link EvaluationValue#NULL_VALUE} instead
-   */
-  @Deprecated(since = "3.3.0", forRemoval = true)
-  public static EvaluationValue nullValue() {
-    return NULL_VALUE;
   }
 
   /**

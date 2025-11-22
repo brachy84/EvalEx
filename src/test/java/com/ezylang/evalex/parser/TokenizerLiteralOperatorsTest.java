@@ -33,12 +33,10 @@ class TokenizerLiteralOperatorsTest extends BaseParserTest {
 
   @BeforeEach
   public void setup() {
-    configuration =
-        configuration.withAdditionalOperators(
-            Map.entry("AND", new AndOperator()),
-            Map.entry("OR", new OrOperator()),
-            Map.entry("NOT", new NotOperator()),
-            Map.entry("DENIED", new DeniedOperator()));
+    configuration.withOperator("AND", new AndOperator())
+            .withOperator("OR", new OrOperator())
+            .withOperator("NOT", new NotOperator())
+            .withOperator("DENIED", new DeniedOperator());
   }
 
   @Test

@@ -33,9 +33,10 @@ class MapBasedFunctionDictionaryTest {
     FunctionIfc min = new MinFunction();
     FunctionIfc max = new MaxFunction();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    FunctionDictionaryIfc dictionary =
-        MapBasedFunctionDictionary.ofFunctions(Map.entry("min", min), Map.entry("max", max));
+    @SuppressWarnings("varargs")
+    FunctionDictionaryIfc dictionary = new MapBasedFunctionDictionary()
+            .withFunction("min", min)
+            .withFunction("max", max);
 
     assertThat(dictionary.getAvailableFunctionNames()).containsExactlyInAnyOrder("min", "max");
     assertThat(dictionary.getFunction("min")).isEqualTo(min);
@@ -47,9 +48,10 @@ class MapBasedFunctionDictionaryTest {
     FunctionIfc min = new MinFunction();
     FunctionIfc max = new MaxFunction();
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    FunctionDictionaryIfc dictionary =
-        MapBasedFunctionDictionary.ofFunctions(Map.entry("Min", min), Map.entry("MAX", max));
+    @SuppressWarnings("varargs")
+    FunctionDictionaryIfc dictionary = new MapBasedFunctionDictionary()
+            .withFunction("min", min)
+            .withFunction("max", max);
 
     assertThat(dictionary.hasFunction("min")).isTrue();
     assertThat(dictionary.hasFunction("MIN")).isTrue();
@@ -65,8 +67,7 @@ class MapBasedFunctionDictionaryTest {
     functionsToRegister.put("min", new MinFunction());
     functionsToRegister.put("max", new MaxFunction());
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    FunctionDictionaryIfc dictionary = MapBasedFunctionDictionary.ofFunctions();
+    FunctionDictionaryIfc dictionary = new MapBasedFunctionDictionary();
     functionsToRegister.forEach(dictionary::addFunction);
 
     assertThat(dictionary.getAvailableFunctionNames())
@@ -75,17 +76,14 @@ class MapBasedFunctionDictionaryTest {
 
   @Test
   void testGetAvailableFunctionNamesEmpty() {
-    @SuppressWarnings({"unchecked", "varargs"})
-    FunctionDictionaryIfc functionDictionaryIfc = MapBasedFunctionDictionary.ofFunctions();
-
-    assertThat(functionDictionaryIfc.getAvailableFunctionNames()).isEmpty();
+    FunctionDictionaryIfc dictionary = new MapBasedFunctionDictionary();
+    assertThat(dictionary.getAvailableFunctionNames()).isEmpty();
   }
 
   @Test
   void testGetAvailableFunctionNamesReturnsAnImmutableCopy() {
-    @SuppressWarnings({"unchecked", "varargs"})
     Set<String> availableFunctions =
-        MapBasedFunctionDictionary.ofFunctions().getAvailableFunctionNames();
+        new MapBasedFunctionDictionary().getAvailableFunctionNames();
 
     assertThatThrownBy(availableFunctions::clear).isInstanceOf(UnsupportedOperationException.class);
   }
@@ -96,8 +94,7 @@ class MapBasedFunctionDictionaryTest {
     functionsToRegister.put("min", new MinFunction());
     functionsToRegister.put("max", new MaxFunction());
 
-    @SuppressWarnings({"unchecked", "varargs"})
-    FunctionDictionaryIfc dictionary = MapBasedFunctionDictionary.ofFunctions();
+    FunctionDictionaryIfc dictionary = new MapBasedFunctionDictionary();
     functionsToRegister.forEach(dictionary::addFunction);
 
     assertThat(dictionary.getAvailableFunctions())
@@ -106,18 +103,13 @@ class MapBasedFunctionDictionaryTest {
 
   @Test
   void testGetAvailableFunctionsEmpty() {
-    @SuppressWarnings({"unchecked", "varargs"})
-    FunctionDictionaryIfc functionDictionaryIfc = MapBasedFunctionDictionary.ofFunctions();
-
+    FunctionDictionaryIfc functionDictionaryIfc = new MapBasedFunctionDictionary();
     assertThat(functionDictionaryIfc.getAvailableFunctions()).isEmpty();
   }
 
   @Test
   void testGetAvailableFunctionsReturnsAnImmutableCopy() {
-    @SuppressWarnings({"unchecked", "varargs"})
-    Set<FunctionIfc> availableFunctions =
-        MapBasedFunctionDictionary.ofFunctions().getAvailableFunctions();
-
+    Set<FunctionIfc> availableFunctions = new MapBasedFunctionDictionary().getAvailableFunctions();
     assertThatThrownBy(availableFunctions::clear).isInstanceOf(UnsupportedOperationException.class);
   }
 }

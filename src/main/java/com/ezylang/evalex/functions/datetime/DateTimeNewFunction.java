@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -94,13 +93,12 @@ public class DateTimeNewFunction extends AbstractFunction {
     }
 
     if (parameterValues[parameterLength - 1].isStringValue()) {
-      if (!Set.of(TimeZone.getAvailableIDs())
-          .contains(parameterValues[parameterLength - 1].getStringValue())) {
+      if (!isValidTimezone(parameterValues[parameterLength - 1].getStringValue())) {
         throw new EvaluationException(
-            token,
-            "Time zone with id '"
-                + parameterValues[parameterLength - 1].getStringValue()
-                + "' not found");
+                token,
+                "Time zone with id '"
+                        + parameterValues[parameterLength - 1].getStringValue()
+                        + "' not found");
       }
       parameterLength--;
     }
@@ -113,5 +111,14 @@ public class DateTimeNewFunction extends AbstractFunction {
     if (parameterLength > 7) {
       throw new EvaluationException(token, "Too many parameters to function");
     }
+  }
+
+  public static boolean isValidTimezone(String id) {
+    for (String timeZone : TimeZone.getAvailableIDs()) {
+      if (id.equals(timeZone)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

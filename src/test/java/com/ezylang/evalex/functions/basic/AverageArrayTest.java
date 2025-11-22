@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.ezylang.evalex.EvaluationException;
 import com.ezylang.evalex.Expression;
 import com.ezylang.evalex.parser.ParseException;
+
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -41,8 +43,8 @@ class AverageArrayTest {
 
   @Test
   void testAverageMultipleArray() throws EvaluationException, ParseException {
-    List<Number> numbers1 = List.of(1, 2, 3);
-    List<Number> numbers2 = List.of(4, 5, 6);
+    List<Number> numbers1 = Arrays.asList(1, 2, 3);
+    List<Number> numbers2 = Arrays.asList(4, 5, 6);
 
     Expression expression =
         new Expression("AVERAGE(numbers1, numbers2)")

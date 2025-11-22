@@ -17,7 +17,11 @@ package com.ezylang.evalex.config;
 
 import static java.util.Arrays.stream;
 
+import com.ezylang.evalex.UnmodifiableSet;
 import com.ezylang.evalex.functions.FunctionIfc;
+
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -37,6 +41,7 @@ public class MapBasedFunctionDictionary implements FunctionDictionaryIfc {
    *     that will initially be added.
    * @return A newly created function dictionary with the specified functions.
    */
+  @Deprecated
   @SuppressWarnings({"unchecked", "varargs"})
   public static FunctionDictionaryIfc ofFunctions(Map.Entry<String, FunctionIfc>... functions) {
     FunctionDictionaryIfc dictionary = new MapBasedFunctionDictionary();
@@ -51,12 +56,12 @@ public class MapBasedFunctionDictionary implements FunctionDictionaryIfc {
 
   @Override
   public Set<String> getAvailableFunctionNames() {
-    return Set.copyOf(functions.keySet());
+    return new UnmodifiableSet<>(functions.keySet());
   }
 
   @Override
   public Set<FunctionIfc> getAvailableFunctions() {
-    return Set.copyOf(functions.values());
+    return new UnmodifiableSet<>(functions.values());
   }
 
   @Override

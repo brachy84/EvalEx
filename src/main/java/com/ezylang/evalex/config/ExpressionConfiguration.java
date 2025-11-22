@@ -144,10 +144,10 @@ import lombok.Getter;
  * <pre>
  *     ExpressionConfiguration.defaultConfiguration()
  *        .withAdditionalOperators(
- *            Map.entry("++", new PrefixPlusPlusOperator()),
- *            Map.entry("++", new PostfixPlusPlusOperator()))
- *        .withAdditionalFunctions(Map.entry("save", new SaveFunction()),
- *            Map.entry("update", new UpdateFunction()));
+ *            .withFunction("++", new PrefixPlusPlusOperator()),
+ *            .withFunction("++", new PostfixPlusPlusOperator()))
+ *        .withAdditionalFunctions(.withFunction("save", new SaveFunction()),
+ *            .withFunction("update", new UpdateFunction()));
  * </pre>
  */
 @Builder(toBuilder = true)
@@ -180,8 +180,8 @@ public class ExpressionConfiguration {
    * </ul>
    */
   protected static final List<DateTimeFormatter> DEFAULT_DATE_TIME_FORMATTERS =
-      new ArrayList<>(
-          List.of(
+      Collections.unmodifiableList(
+          Arrays.asList(
               DateTimeFormatter.ISO_DATE_TIME,
               DateTimeFormatter.ISO_DATE,
               DateTimeFormatter.ISO_LOCAL_DATE_TIME,
@@ -190,114 +190,111 @@ public class ExpressionConfiguration {
 
   /** The operator dictionary holds all operators that will be allowed in an expression. */
   @Builder.Default
-  @SuppressWarnings("unchecked")
-  private final OperatorDictionaryIfc operatorDictionary =
-      MapBasedOperatorDictionary.ofOperators(
+  private final OperatorDictionaryIfc operatorDictionary = new MapBasedOperatorDictionary()
           // arithmetic
-          Map.entry("+", new PrefixPlusOperator()),
-          Map.entry("-", new PrefixMinusOperator()),
-          Map.entry("+", new InfixPlusOperator()),
-          Map.entry("-", new InfixMinusOperator()),
-          Map.entry("*", new InfixMultiplicationOperator()),
-          Map.entry("/", new InfixDivisionOperator()),
-          Map.entry("^", new InfixPowerOfOperator()),
-          Map.entry("%", new InfixModuloOperator()),
+          .withOperator("+", new PrefixPlusOperator())
+          .withOperator("-", new PrefixMinusOperator())
+          .withOperator("+", new InfixPlusOperator())
+          .withOperator("-", new InfixMinusOperator())
+          .withOperator("*", new InfixMultiplicationOperator())
+          .withOperator("/", new InfixDivisionOperator())
+          .withOperator("^", new InfixPowerOfOperator())
+          .withOperator("%", new InfixModuloOperator())
           // booleans
-          Map.entry("=", new InfixEqualsOperator()),
-          Map.entry("==", new InfixEqualsOperator()),
-          Map.entry("!=", new InfixNotEqualsOperator()),
-          Map.entry("<>", new InfixNotEqualsOperator()),
-          Map.entry(">", new InfixGreaterOperator()),
-          Map.entry(">=", new InfixGreaterEqualsOperator()),
-          Map.entry("<", new InfixLessOperator()),
-          Map.entry("<=", new InfixLessEqualsOperator()),
-          Map.entry("&&", new InfixAndOperator()),
-          Map.entry("||", new InfixOrOperator()),
-          Map.entry("!", new PrefixNotOperator()));
+          .withOperator("=", new InfixEqualsOperator())
+          .withOperator("==", new InfixEqualsOperator())
+          .withOperator("!=", new InfixNotEqualsOperator())
+          .withOperator("<>", new InfixNotEqualsOperator())
+          .withOperator(">", new InfixGreaterOperator())
+          .withOperator(">=", new InfixGreaterEqualsOperator())
+          .withOperator("<", new InfixLessOperator())
+          .withOperator("<=", new InfixLessEqualsOperator())
+          .withOperator("&&", new InfixAndOperator())
+          .withOperator("||", new InfixOrOperator())
+          .withOperator("!", new PrefixNotOperator());
 
   /** The function dictionary holds all functions that will be allowed in an expression. */
   @Builder.Default
   @SuppressWarnings("unchecked")
-  private final FunctionDictionaryIfc functionDictionary =
-      MapBasedFunctionDictionary.ofFunctions(
+  private final FunctionDictionaryIfc functionDictionary = new MapBasedFunctionDictionary()
           // basic functions
-          Map.entry("ABS", new AbsFunction()),
-          Map.entry("AVERAGE", new AverageFunction()),
-          Map.entry("CEILING", new CeilingFunction()),
-          Map.entry("COALESCE", new CoalesceFunction()),
-          Map.entry("FACT", new FactFunction()),
-          Map.entry("FLOOR", new FloorFunction()),
-          Map.entry("IF", new IfFunction()),
-          Map.entry("LOG", new LogFunction()),
-          Map.entry("LOG10", new Log10Function()),
-          Map.entry("MAX", new MaxFunction()),
-          Map.entry("MIN", new MinFunction()),
-          Map.entry("NOT", new NotFunction()),
-          Map.entry("RANDOM", new RandomFunction()),
-          Map.entry("ROUND", new RoundFunction()),
-          Map.entry("SQRT", new SqrtFunction()),
-          Map.entry("SUM", new SumFunction()),
-          Map.entry("SWITCH", new SwitchFunction()),
+          .withFunction("ABS", new AbsFunction())
+          .withFunction("AVERAGE", new AverageFunction())
+          .withFunction("CEILING", new CeilingFunction())
+          .withFunction("COALESCE", new CoalesceFunction())
+          .withFunction("FACT", new FactFunction())
+          .withFunction("FLOOR", new FloorFunction())
+          .withFunction("IF", new IfFunction())
+          .withFunction("LOG", new LogFunction())
+          .withFunction("LOG10", new Log10Function())
+          .withFunction("MAX", new MaxFunction())
+          .withFunction("MIN", new MinFunction())
+          .withFunction("NOT", new NotFunction())
+          .withFunction("RANDOM", new RandomFunction())
+          .withFunction("ROUND", new RoundFunction())
+          .withFunction("SQRT", new SqrtFunction())
+          .withFunction("SUM", new SumFunction())
+          .withFunction("SWITCH", new SwitchFunction())
           // trigonometric
-          Map.entry("ACOS", new AcosFunction()),
-          Map.entry("ACOSH", new AcosHFunction()),
-          Map.entry("ACOSR", new AcosRFunction()),
-          Map.entry("ACOT", new AcotFunction()),
-          Map.entry("ACOTH", new AcotHFunction()),
-          Map.entry("ACOTR", new AcotRFunction()),
-          Map.entry("ASIN", new AsinFunction()),
-          Map.entry("ASINH", new AsinHFunction()),
-          Map.entry("ASINR", new AsinRFunction()),
-          Map.entry("ATAN", new AtanFunction()),
-          Map.entry("ATAN2", new Atan2Function()),
-          Map.entry("ATAN2R", new Atan2RFunction()),
-          Map.entry("ATANH", new AtanHFunction()),
-          Map.entry("ATANR", new AtanRFunction()),
-          Map.entry("COS", new CosFunction()),
-          Map.entry("COSH", new CosHFunction()),
-          Map.entry("COSR", new CosRFunction()),
-          Map.entry("COT", new CotFunction()),
-          Map.entry("COTH", new CotHFunction()),
-          Map.entry("COTR", new CotRFunction()),
-          Map.entry("CSC", new CscFunction()),
-          Map.entry("CSCH", new CscHFunction()),
-          Map.entry("CSCR", new CscRFunction()),
-          Map.entry("DEG", new DegFunction()),
-          Map.entry("RAD", new RadFunction()),
-          Map.entry("SIN", new SinFunction()),
-          Map.entry("SINH", new SinHFunction()),
-          Map.entry("SINR", new SinRFunction()),
-          Map.entry("SEC", new SecFunction()),
-          Map.entry("SECH", new SecHFunction()),
-          Map.entry("SECR", new SecRFunction()),
-          Map.entry("TAN", new TanFunction()),
-          Map.entry("TANH", new TanHFunction()),
-          Map.entry("TANR", new TanRFunction()),
+          .withFunction("ACOS", new AcosFunction())
+          .withFunction("ACOSH", new AcosHFunction())
+          .withFunction("ACOSR", new AcosRFunction())
+          .withFunction("ACOT", new AcotFunction())
+          .withFunction("ACOTH", new AcotHFunction())
+          .withFunction("ACOTR", new AcotRFunction())
+          .withFunction("ASIN", new AsinFunction())
+          .withFunction("ASINH", new AsinHFunction())
+          .withFunction("ASINR", new AsinRFunction())
+          .withFunction("ATAN", new AtanFunction())
+          .withFunction("ATAN2", new Atan2Function())
+          .withFunction("ATAN2R", new Atan2RFunction())
+          .withFunction("ATANH", new AtanHFunction())
+          .withFunction("ATANR", new AtanRFunction())
+          .withFunction("COS", new CosFunction())
+          .withFunction("COSH", new CosHFunction())
+          .withFunction("COSR", new CosRFunction())
+          .withFunction("COT", new CotFunction())
+          .withFunction("COTH", new CotHFunction())
+          .withFunction("COTR", new CotRFunction())
+          .withFunction("CSC", new CscFunction())
+          .withFunction("CSCH", new CscHFunction())
+          .withFunction("CSCR", new CscRFunction())
+          .withFunction("DEG", new DegFunction())
+          .withFunction("RAD", new RadFunction())
+          .withFunction("SIN", new SinFunction())
+          .withFunction("SINH", new SinHFunction())
+          .withFunction("SINR", new SinRFunction())
+          .withFunction("SEC", new SecFunction())
+          .withFunction("SECH", new SecHFunction())
+          .withFunction("SECR", new SecRFunction())
+          .withFunction("TAN", new TanFunction())
+          .withFunction("TANH", new TanHFunction())
+          .withFunction("TANR", new TanRFunction())
           // string functions
-          Map.entry("STR_CONTAINS", new StringContains()),
-          Map.entry("STR_ENDS_WITH", new StringEndsWithFunction()),
-          Map.entry("STR_FORMAT", new StringFormatFunction()),
-          Map.entry("STR_LEFT", new StringLeftFunction()),
-          Map.entry("STR_LENGTH", new StringLengthFunction()),
-          Map.entry("STR_LOWER", new StringLowerFunction()),
-          Map.entry("STR_MATCHES", new StringMatchesFunction()),
-          Map.entry("STR_RIGHT", new StringRightFunction()),
-          Map.entry("STR_SPLIT", new StringSplitFunction()),
-          Map.entry("STR_STARTS_WITH", new StringStartsWithFunction()),
-          Map.entry("STR_SUBSTRING", new StringSubstringFunction()),
-          Map.entry("STR_TRIM", new StringTrimFunction()),
-          Map.entry("STR_UPPER", new StringUpperFunction()),
+          .withFunction("STR_CONTAINS", new StringContains())
+          .withFunction("STR_ENDS_WITH", new StringEndsWithFunction())
+          .withFunction("STR_FORMAT", new StringFormatFunction())
+          .withFunction("STR_LEFT", new StringLeftFunction())
+          .withFunction("STR_LENGTH", new StringLengthFunction())
+          .withFunction("STR_LOWER", new StringLowerFunction())
+          .withFunction("STR_MATCHES", new StringMatchesFunction())
+          .withFunction("STR_RIGHT", new StringRightFunction())
+          .withFunction("STR_SPLIT", new StringSplitFunction())
+          .withFunction("STR_STARTS_WITH", new StringStartsWithFunction())
+          .withFunction("STR_SUBSTRING", new StringSubstringFunction())
+          .withFunction("STR_TRIM", new StringTrimFunction())
+          .withFunction("STR_UPPER", new StringUpperFunction())
           // date time functions
-          Map.entry("DT_DATE_NEW", new DateTimeNewFunction()),
-          Map.entry("DT_DATE_PARSE", new DateTimeParseFunction()),
-          Map.entry("DT_DATE_FORMAT", new DateTimeFormatFunction()),
-          Map.entry("DT_DATE_TO_EPOCH", new DateTimeToEpochFunction()),
-          Map.entry("DT_DURATION_NEW", new DurationNewFunction()),
-          Map.entry("DT_DURATION_FROM_MILLIS", new DurationFromMillisFunction()),
-          Map.entry("DT_DURATION_TO_MILLIS", new DurationToMillisFunction()),
-          Map.entry("DT_DURATION_PARSE", new DurationParseFunction()),
-          Map.entry("DT_NOW", new DateTimeNowFunction()),
-          Map.entry("DT_TODAY", new DateTimeTodayFunction()));
+          .withFunction("DT_DATE_NEW", new DateTimeNewFunction())
+          .withFunction("DT_DATE_PARSE", new DateTimeParseFunction())
+          .withFunction("DT_DATE_FORMAT", new DateTimeFormatFunction())
+          .withFunction("DT_DATE_TO_EPOCH", new DateTimeToEpochFunction())
+          .withFunction("DT_DURATION_NEW", new DurationNewFunction())
+          .withFunction("DT_DURATION_FROM_MILLIS", new DurationFromMillisFunction())
+          .withFunction("DT_DURATION_TO_MILLIS", new DurationToMillisFunction())
+          .withFunction("DT_DURATION_PARSE", new DurationParseFunction())
+          .withFunction("DT_NOW", new DateTimeNowFunction())
+          .withFunction("DT_TODAY", new DateTimeTodayFunction());
 
   /** The math context to use. */
   @Builder.Default private final MathContext mathContext = DEFAULT_MATH_CONTEXT;
@@ -447,7 +444,7 @@ public class ExpressionConfiguration {
    *     implementation. <br>
    *     Example: <code>
    *                  ExpressionConfiguration.defaultConfiguration() .withAdditionalOperators(
-   *                  Map.entry("++", new PrefixPlusPlusOperator()), Map.entry("++", new
+   *                  .withFunction("++", new PrefixPlusPlusOperator()), .withFunction("++", new
    *                  PostfixPlusPlusOperator()));
    *                  </code>
    * @return The modified configuration, to allow chaining of methods.
@@ -460,6 +457,11 @@ public class ExpressionConfiguration {
     return this;
   }
 
+  public final ExpressionConfiguration withOperator(String token, OperatorIfc operator) {
+    operatorDictionary.addOperator(token, operator);
+    return this;
+  }
+
   /**
    * Adds additional functions to this configuration.
    *
@@ -467,7 +469,7 @@ public class ExpressionConfiguration {
    *     implementation. <br>
    *     Example: <code>
    *                  ExpressionConfiguration.defaultConfiguration() .withAdditionalFunctions(
-   *                  Map.entry("save", new SaveFunction()), Map.entry("update", new
+   *                  .withFunction("save", new SaveFunction()), .withFunction("update", new
    *                  UpdateFunction()));
    *                  </code>
    * @return The modified configuration, to allow chaining of methods.
@@ -477,6 +479,11 @@ public class ExpressionConfiguration {
       Map.Entry<String, FunctionIfc>... functions) {
     Arrays.stream(functions)
         .forEach(entry -> functionDictionary.addFunction(entry.getKey(), entry.getValue()));
+    return this;
+  }
+
+  public final ExpressionConfiguration withFunction(String token, FunctionIfc function) {
+    functionDictionary.addFunction(token, function);
     return this;
   }
 }

@@ -35,11 +35,10 @@ public class TestConfigurationProvider {
           .zoneId(ZoneId.of("Europe/Berlin"))
           .locale(Locale.US)
           .build()
-          .withAdditionalOperators(
-              Map.entry("++", new PrefixPlusPlusOperator()),
-              Map.entry("++", new PostfixPlusPlusOperator()),
-              Map.entry("?", new PostfixQuestionOperator()))
-          .withAdditionalFunctions(Map.entry("TEST", new DummyFunction()));
+          .withOperator("++", new PrefixPlusPlusOperator())
+          .withOperator("++", new PostfixPlusPlusOperator())
+          .withOperator("?", new PostfixQuestionOperator())
+          .withFunction("TEST", new DummyFunction());
 
   public static final ExpressionConfiguration GermanConfiguration =
       ExpressionConfiguration.builder()

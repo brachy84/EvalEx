@@ -33,6 +33,11 @@ public interface OperatorDictionaryIfc {
    */
   void addOperator(String operatorString, OperatorIfc operator);
 
+  default OperatorDictionaryIfc withOperator(String operatorString, OperatorIfc operator) {
+    addOperator(operatorString, operator);
+    return this;
+  }
+
   /**
    * Check if the dictionary has a prefix operator with that name.
    *

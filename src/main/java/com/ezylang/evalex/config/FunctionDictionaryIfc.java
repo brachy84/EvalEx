@@ -33,6 +33,11 @@ public interface FunctionDictionaryIfc {
    */
   void addFunction(String functionName, FunctionIfc function);
 
+  default FunctionDictionaryIfc withFunction(String functionName, FunctionIfc function) {
+    addFunction(functionName, function);
+    return this;
+  }
+
   /**
    * Check if the dictionary has a function with that name.
    *

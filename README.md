@@ -254,3 +254,6 @@ see [LICENSE](https://raw.githubusercontent.com/ezylang/EvalEx/main/LICENSE) fil
 * The SQRT() function implementation was taken from the
   book [The Java Programmers Guide To numerical Computing](http://www.amazon.de/Java-Number-Cruncher-Programmers-Numerical/dp/0130460419) (
   Ronald Mak, 2002)
+
+## Changes from upstream
+- move from maven pom.xml to gradle

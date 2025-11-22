@@ -1,8 +1,7 @@
 name: Release and publish to Maven Central
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
+
 jobs:
   publish:
     runs-on: ubuntu-latest
